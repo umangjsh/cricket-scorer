@@ -1,0 +1,503 @@
+/* ---------------------------------------------------------------
+   Design tokens
+   Grounded in an actual stadium scoreboard + paper scorecard, not a
+   generic SaaS palette: deep pitch green, scorecard cream, leather-
+   ball red, bail gold. Numeric scores use a monospace face the way
+   physical scoreboards use fixed-width segmented digits.
+----------------------------------------------------------------*/
+:root {
+  --pitch: #0f3d2e;
+  --pitch-deep: #0a2b20;
+  --pitch-light: #1f5a3f;
+  --cream: #fbf7ee;
+  --chalk: #eae3d2;
+  --leather: #a63a34;
+  --leather-deep: #7e2b26;
+  --gold: #c9a227;
+  --ink: #16211b;
+  --ink-soft: #4b5d53;
+  --line: rgba(22, 33, 27, 0.14);
+  --line-on-dark: rgba(251, 247, 238, 0.16);
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-ui: "Space Grotesk", system-ui, sans-serif;
+  --font-score: "Space Mono", "SF Mono", monospace;
+
+  --radius: 3px;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--pitch-deep);
+  color: var(--ink);
+  font-family: var(--font-ui);
+}
+
+a { color: inherit; }
+
+button {
+  font-family: var(--font-ui);
+  cursor: pointer;
+}
+
+.app-shell {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------------- Top bar ---------------- */
+.topbar {
+  background: var(--pitch-deep);
+  color: var(--cream);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line-on-dark);
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.brand .dot {
+  color: var(--gold);
+}
+
+.topbar nav a {
+  color: var(--chalk);
+  text-decoration: none;
+  font-size: 14px;
+  margin-left: 20px;
+}
+
+/* ---------------- Layout ---------------- */
+.page {
+  flex: 1;
+  background: var(--cream);
+}
+
+.page-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.page-inner.wide {
+  max-width: 1280px;
+}
+
+/* ---------------- Home hero: a top-down pitch strip ---------------- */
+.pitch-hero {
+  position: relative;
+  background: linear-gradient(180deg, var(--pitch) 0%, var(--pitch-light) 100%);
+  border-radius: var(--radius);
+  overflow: hidden;
+  padding: 64px 40px;
+  color: var(--cream);
+  margin-bottom: 40px;
+}
+
+.pitch-hero::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -10%;
+  width: 140px;
+  height: 130%;
+  transform: translateX(-50%);
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(251, 247, 238, 0.07) 0px,
+    rgba(251, 247, 238, 0.07) 2px,
+    transparent 2px,
+    transparent 34px
+  );
+}
+
+.pitch-hero::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 6%;
+  width: 92px;
+  height: 3px;
+  transform: translateX(-50%);
+  background: var(--chalk);
+  box-shadow: 0 88vh 0 0 var(--chalk);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 560px;
+}
+
+.hero-content h1 {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5vw, 48px);
+  line-height: 1.08;
+  margin: 0 0 16px;
+}
+
+.hero-content p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--chalk);
+  margin: 0 0 28px;
+  max-width: 46ch;
+}
+
+/* ---------------- Buttons ---------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  font-size: 14px;
+  font-weight: 600;
+  transition: transform 0.08s ease;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+.btn-outline {
+  background: transparent;
+  border-color: var(--line-on-dark);
+  color: var(--cream);
+}
+
+.btn-outline.on-cream {
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+.btn-danger {
+  background: var(--leather);
+  color: var(--cream);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink-soft);
+  padding: 8px 12px;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ---------------- Cards / panels (deliberately squared, hairline, not bubble cards) ---------------- */
+.panel {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+
+.panel + .panel {
+  margin-top: 20px;
+}
+
+.panel h2, .panel h3 {
+  font-family: var(--font-display);
+  margin-top: 0;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 760px) {
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+}
+
+/* ---------------- Form elements ---------------- */
+label {
+  display: block;
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  background: #fff;
+  color: var(--ink);
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.player-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.player-row input { flex: 1; }
+
+/* ---------------- Scoreboard (the signature moment) ---------------- */
+.scoreboard {
+  background: var(--pitch-deep);
+  color: var(--cream);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.scoreboard .team-name {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--chalk);
+  margin-bottom: 6px;
+}
+
+.scoreboard .score-digits {
+  font-family: var(--font-score);
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.scoreboard .score-digits .wkts { color: var(--leather); }
+
+.scoreboard .overs {
+  font-family: var(--font-score);
+  font-size: 15px;
+  color: var(--chalk);
+  margin-top: 6px;
+}
+
+.scoreboard .meta {
+  text-align: right;
+  font-family: var(--font-score);
+  font-size: 13px;
+  color: var(--chalk);
+  line-height: 1.7;
+}
+
+.scoreboard .meta .rr-value { color: var(--gold); }
+
+.live-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--leather);
+  margin-right: 6px;
+  animation: pulse 1.4s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+/* ---------------- This-over strip ---------------- */
+.over-strip {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.ball-chip {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-score);
+  font-size: 13px;
+  font-weight: 700;
+  background: rgba(251, 247, 238, 0.1);
+  color: var(--cream);
+  border: 1px solid var(--line-on-dark);
+}
+
+.ball-chip.boundary { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+.ball-chip.six { background: var(--leather); color: var(--cream); border-color: var(--leather); }
+.ball-chip.wicket { background: var(--leather-deep); color: var(--cream); border-color: var(--leather-deep); }
+.ball-chip.extra { background: transparent; color: var(--chalk); border-style: dashed; }
+
+/* ---------------- Scoring pad ---------------- */
+.scoring-pad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pad-btn {
+  padding: 16px 0;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: #fff;
+  font-family: var(--font-score);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.pad-btn.run-4 { border-color: var(--gold); color: var(--gold); }
+.pad-btn.run-6 { border-color: var(--leather); color: var(--leather); }
+.pad-btn.wicket { background: var(--leather); color: var(--cream); border-color: var(--leather); grid-column: span 2; font-family: var(--font-ui); font-size: 14px; }
+.pad-btn.extra { font-family: var(--font-ui); font-size: 13px; background: var(--chalk); }
+.pad-btn.undo { font-family: var(--font-ui); font-size: 13px; background: transparent; color: var(--ink-soft); }
+
+/* ---------------- Commentary feed ---------------- */
+.commentary-feed {
+  margin-top: 20px;
+  max-height: 320px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 10px;
+}
+
+.commentary-item {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+
+.commentary-item .over-ball {
+  font-family: var(--font-score);
+  color: var(--ink-soft);
+  min-width: 42px;
+}
+
+/* ---------------- Tables ---------------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th {
+  text-align: left;
+  font-size: 11px;
+  text-transform: none;
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--line);
+  padding: 8px 10px;
+  font-weight: 600;
+}
+
+td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-score);
+}
+
+td.name { font-family: var(--font-ui); }
+
+/* ---------------- Awards ---------------- */
+.award-card {
+  border: 1px solid var(--gold);
+  border-radius: var(--radius);
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(180deg, #fffdf7 0%, var(--cream) 100%);
+}
+
+.award-card .label {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+}
+
+.award-card .name {
+  font-family: var(--font-display);
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+
+.award-card .points {
+  font-family: var(--font-score);
+  color: var(--gold);
+  font-size: 13px;
+}
+
+/* ---------------- Misc ---------------- */
+.muted { color: var(--ink-soft); }
+.error-text { color: var(--leather); font-size: 13px; margin-top: 6px; }
+.tag {
+  display: inline-block;
+  font-size: 11px;
+  padding: 3px 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink-soft);
+}
+.copy-box {
+  font-family: var(--font-score);
+  font-size: 13px;
+  background: var(--chalk);
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  word-break: break-all;
+}
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+.tabs button {
+  background: none;
+  border: none;
+  padding: 10px 16px;
+  font-size: 14px;
+  color: var(--ink-soft);
+  border-bottom: 2px solid transparent;
+}
+.tabs button.active {
+  color: var(--ink);
+  border-bottom-color: var(--gold);
+  font-weight: 600;
+}
